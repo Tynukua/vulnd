@@ -7,14 +7,17 @@ loader = DirectoryLoader("vuln_files", glob="**/*.txt", loader_cls=TextLoader)
 docs = loader.load()
 
 splitter = RecursiveCharacterTextSplitter(
-    chunk_size=500,
+    chunk_size=1000,
     chunk_overlap=50
 )
 chunks = splitter.split_documents(docs)
+for chunk in chunks:
+    print(chunk.page_content)
+    print("="*50)
 
 embedding = OpenAIEmbeddings()
 
-vectorstore = FAISS.from_documents(chunks, embedding)
+vectorstore = FAISS.from_documents(docs, embedding)
 
 vectorstore.save_local("vuln_index")
 

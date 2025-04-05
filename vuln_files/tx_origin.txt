@@ -1,4 +1,4 @@
-tx.origin Authentication Vulnerability
+[tx.origin Authentication Vulnerability]
 
 Description:
 Using `tx.origin` for authentication allows phishing attacks, since `tx.origin` is the original sender of the entire transaction and can be tricked.

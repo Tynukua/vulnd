@@ -1,4 +1,4 @@
-Reentrancy Vulnerability
+[Reentrancy Vulnerability]
 
 Description:
 A reentrancy attack happens when a contract makes an external call to another untrusted contract before it resolves its own internal logic. The untrusted contract can call back into the original function and exploit the inconsistent state.
