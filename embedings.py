@@ -1,7 +1,7 @@
-from langchain.document_loaders import DirectoryLoader, TextLoader
+from langchain_community.document_loaders import DirectoryLoader, TextLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.vectorstores import FAISS
+from langchain_openai.embeddings import OpenAIEmbeddings
+from langchain_community.vectorstores import FAISS
 
 loader = DirectoryLoader("vuln_files", glob="**/*.txt", loader_cls=TextLoader)
 docs = loader.load()
