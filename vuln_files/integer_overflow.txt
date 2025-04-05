@@ -1,0 +1,19 @@
+Integer Overflow and Underflow
+
+Description:
+In Solidity versions <0.8.0, arithmetic operations do not check for overflows or underflows, leading to unexpected behavior.
+
+Example:
+function add(uint256 a, uint256 b) public pure returns (uint256) {
+    return a + b;
+}
+
+Fix:
+Use Solidity >=0.8.0 or use SafeMath library to handle overflow checks.
+
+Fixed Example:
+function add(uint256 a, uint256 b) public pure returns (uint256) {
+    unchecked {
+        return a + b;
+    }
+}
