@@ -1,3 +1,4 @@
 .env
 vuln_index/
 .~lock.validate.xlsx#
+__pycache__/
