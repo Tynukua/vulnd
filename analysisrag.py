@@ -57,6 +57,7 @@ RETURN a COMPREHENSIVE JSON ARRAY where EACH DETECTED ISSUE follows THIS STRUCTU
 FOLLOW THIS STEP-BY-STEP LOGIC TO GUIDE YOUR ANALYSIS:
 
 1. UNDERSTAND:
+   - BEFORE ANYLYZING, NUMERIZE all lines of code for precise referencing
    - READ the known vulnerabilities context carefully
    - COMPREHEND the functionality and purpose of the target Solidity code
 
@@ -139,3 +140,4 @@ def get_vulnerabilities(code):
     result_text = result['result']
     (result_text[result_text.find("```json") + len("```json"):result_text.find("```", result_text.find("```json") + len("```json"))])
     return json.loads(result_text[result_text.find("```json") + len("```json"):result_text.find("```", result_text.find("```json") + len("```json"))])
+# %%
