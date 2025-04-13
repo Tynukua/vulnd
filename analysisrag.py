@@ -140,4 +140,3 @@ def get_vulnerabilities(code):
     result_text = result['result']
     (result_text[result_text.find("```json") + len("```json"):result_text.find("```", result_text.find("```json") + len("```json"))])
     return json.loads(result_text[result_text.find("```json") + len("```json"):result_text.find("```", result_text.find("```json") + len("```json"))])
-# %%

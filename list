@@ -1,0 +1,8 @@
+Integer Overflow and Underflow  
+Unchecked Call Return Value                            
+Authorization through tx.origin                        
+Reentrancy                                             
+Hash Collisions With Multiple Variable Length Arguments
+Unprotected Ether Withdrawal  
+Unprotected SELFDESTRUCT Instruction 
+Use of Deprecated Solidity Functions

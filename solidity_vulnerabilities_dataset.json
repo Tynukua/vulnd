@@ -1,0 +1,184 @@
+[
+  {
+    "code": "pragma solidity ^0.4.24;\n\ncontract OverflowExample {\n    uint8 public count = 255;\n\n    function increment() public {\n        count += 1; // overflow here\n    }\n}",
+    "vulnerabilities": [
+      {
+        "line": "6",
+        "token": "count += 1;",
+        "problem": "Integer Overflow",
+        "severity": "high",
+        "explanation": "The variable `count` is of type uint8 and can overflow when it exceeds 255, causing it to wrap to 0. This can be exploited in logic depending on counter values.",
+        "migration": "Use SafeMath or upgrade to Solidity >= 0.8.0, which has built-in overflow checks."
+      }
+    ],
+    "fixed": []
+  },
+  {
+    "code": "pragma solidity ^0.6.0;\n\ncontract Vulnerable {\n    mapping(address => uint) public balances;\n\n    function withdraw() public {\n        uint amount = balances[msg.sender];\n        (bool success, ) = msg.sender.call{value: amount}(\"\"); // Reentrancy here\n        require(success);\n        balances[msg.sender] = 0;\n    }\n}",
+    "vulnerabilities": [
+      {
+        "line": "7",
+        "token": "msg.sender.call{value: amount}(\"\");",
+        "problem": "Reentrancy",
+        "severity": "high",
+        "explanation": "Calling external address before updating state allows attacker to re-enter the function before `balances[msg.sender]` is reset.",
+        "migration": "Update the balance before making external call, or use a reentrancy guard."
+      }
+    ],
+    "fixed": []
+  },
+  {
+    "code": "pragma solidity ^0.8.0;\n\ncontract Secure {\n    address owner;\n\n    constructor() {\n        owner = msg.sender;\n    }\n\n    function sensitiveAction() public {\n        require(msg.sender == owner, \"Not authorized\");\n        // safe now, uses msg.sender instead of tx.origin\n    }\n}",
+    "vulnerabilities": [],
+    "fixed": [
+      {
+        "line": "9",
+        "token": "require(msg.sender == owner, \"Not authorized\");",
+        "problem": "Authorization through tx.origin",
+        "severity": "medium",
+        "explanation": "`tx.origin` is not used here \u2014 which is correct. Prior versions might have used it and been vulnerable to phishing via contracts.",
+        "migration": "Replace `tx.origin` with `msg.sender` to ensure correct access control in multi-contract setups."
+      }
+    ]
+  },
+  {
+    "code": "pragma solidity ^0.4.24;\n\ncontract UncheckedCall {\n    function withdraw(address _to) public {\n        _to.call.value(1 ether)(); // unchecked call\n    }\n}",
+    "vulnerabilities": [
+      {
+        "line": "5",
+        "token": "_to.call.value(1 ether)();",
+        "problem": "Unchecked Call Return Value",
+        "severity": "high",
+        "explanation": "The call return value is not checked, so if the transfer fails, the contract won\u2019t revert and the user may lose funds or execution may continue unexpectedly.",
+        "migration": "Check the return value with `require(success)` or use `transfer` or `send` with proper checks."
+      }
+    ],
+    "fixed": []
+  },
+  {
+    "code": "pragma solidity ^0.4.24;\n\ncontract TxOrigin {\n    address owner;\n\n    constructor() public {\n        owner = msg.sender;\n    }\n\n    function transfer() public {\n        require(tx.origin == owner); // vulnerable\n    }\n}",
+    "vulnerabilities": [
+      {
+        "line": "10",
+        "token": "require(tx.origin == owner);",
+        "problem": "Authorization through tx.origin",
+        "severity": "medium",
+        "explanation": "`tx.origin` can be manipulated by phishing via a contract call, potentially allowing unauthorized access.",
+        "migration": "Use `msg.sender` for authentication instead of `tx.origin`."
+      }
+    ],
+    "fixed": []
+  },
+  {
+    "code": "pragma solidity ^0.6.0;\n\ncontract HashCollision {\n    function test(bytes memory a, bytes memory b) public pure returns (bool) {\n        return keccak256(abi.encodePacked(a, b)) == keccak256(abi.encodePacked(b, a)); // collision risk\n    }\n}",
+    "vulnerabilities": [
+      {
+        "line": "5",
+        "token": "keccak256(abi.encodePacked(a, b)) == keccak256(abi.encodePacked(b, a));",
+        "problem": "Hash Collisions With Multiple Variable Length Arguments",
+        "severity": "medium",
+        "explanation": "Concatenated dynamic arguments may lead to hash collisions, breaking logic depending on hash uniqueness.",
+        "migration": "Use abi.encode instead of abi.encodePacked to avoid collision between dynamic types."
+      }
+    ],
+    "fixed": []
+  },
+  {
+    "code": "pragma solidity ^0.6.0;\n\ncontract SelfDestruct {\n    function destroy() public {\n        selfdestruct(msg.sender); // unprotected\n    }\n}",
+    "vulnerabilities": [
+      {
+        "line": "5",
+        "token": "selfdestruct(msg.sender);",
+        "problem": "Unprotected SELFDESTRUCT Instruction",
+        "severity": "high",
+        "explanation": "Any caller can trigger contract destruction, potentially locking or destroying critical state and funds.",
+        "migration": "Restrict access to `selfdestruct` function using owner or role-based checks."
+      }
+    ],
+    "fixed": []
+  },
+  {
+    "code": "pragma solidity ^0.4.24;\n\ncontract DeprecatedFunctions {\n    function example() public {\n        sha3(\"data\"); // deprecated\n    }\n}",
+    "vulnerabilities": [
+      {
+        "line": "5",
+        "token": "sha3(\"data\");",
+        "problem": "Use of Deprecated Solidity Functions",
+        "severity": "low",
+        "explanation": "`sha3` is an old alias for `keccak256`, which should be used in modern versions for clarity and compatibility.",
+        "migration": "Replace `sha3` with `keccak256`."
+      }
+    ],
+    "fixed": []
+  },
+  {
+    "code": "pragma solidity ^0.6.0;\n\ncontract EtherWithdrawal {\n    function withdraw() public {\n        msg.sender.transfer(address(this).balance); // unprotected\n    }\n}",
+    "vulnerabilities": [
+      {
+        "line": "5",
+        "token": "msg.sender.transfer(address(this).balance);",
+        "problem": "Unprotected Ether Withdrawal",
+        "severity": "high",
+        "explanation": "Anyone can withdraw all contract funds without restrictions.",
+        "migration": "Add access control check to restrict withdrawals to authorized users only."
+      }
+    ],
+    "fixed": []
+  },
+  {
+    "code": "pragma solidity ^0.4.24;\n\ncontract FixedOverflow {\n    uint8 public count = 255;\n\n    function increment() public {\n        require(count < 255);\n        count += 1;\n    }\n}",
+    "vulnerabilities": [],
+    "fixed": [
+      {
+        "line": "6",
+        "token": "require(count < 255);",
+        "problem": "Integer Overflow",
+        "severity": "high",
+        "explanation": "The addition is protected by a require guard that ensures overflow does not occur.",
+        "migration": "Guard arithmetic operations or use Solidity >= 0.8.0 with built-in overflow protection."
+      }
+    ]
+  },
+  {
+    "code": "pragma solidity ^0.8.0;\n\ncontract CheckedCall {\n    function withdraw(address payable _to) public {\n        (bool success, ) = _to.call{value: 1 ether}(\"\");\n        require(success, \"Transfer failed\");\n    }\n}",
+    "vulnerabilities": [],
+    "fixed": [
+      {
+        "line": "5",
+        "token": "require(success, \"Transfer failed\");",
+        "problem": "Unchecked Call Return Value",
+        "severity": "high",
+        "explanation": "Return value is verified, preventing unnoticed failures.",
+        "migration": "Always check call return values with `require(success)`."
+      }
+    ]
+  },
+  {
+    "code": "pragma solidity ^0.8.0;\n\ncontract ProtectedSelfDestruct {\n    address owner;\n\n    constructor() {\n        owner = msg.sender;\n    }\n\n    function destroy() public {\n        require(msg.sender == owner, \"Not owner\");\n        selfdestruct(payable(owner));\n    }\n}",
+    "vulnerabilities": [],
+    "fixed": [
+      {
+        "line": "10",
+        "token": "require(msg.sender == owner, \"Not owner\");",
+        "problem": "Unprotected SELFDESTRUCT Instruction",
+        "severity": "high",
+        "explanation": "SELFDESTRUCT is now restricted to the contract owner.",
+        "migration": "Add owner check before calling `selfdestruct`."
+      }
+    ]
+  },
+  {
+    "code": "pragma solidity ^0.8.0;\n\ncontract UpdatedHash {\n    function test(bytes memory a, bytes memory b) public pure returns (bool) {\n        return keccak256(abi.encode(a, b)) == keccak256(abi.encode(b, a)); // fixed\n    }\n}",
+    "vulnerabilities": [],
+    "fixed": [
+      {
+        "line": "5",
+        "token": "keccak256(abi.encode(a, b)) == keccak256(abi.encode(b, a));",
+        "problem": "Hash Collisions With Multiple Variable Length Arguments",
+        "severity": "medium",
+        "explanation": "Using `abi.encode` eliminates the collision risk between dynamic types.",
+        "migration": "Avoid `abi.encodePacked` with dynamic types, use `abi.encode` instead."
+      }
+    ]
+  }
+]

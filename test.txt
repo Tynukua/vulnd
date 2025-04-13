@@ -1,0 +1,37 @@
+Unencrypted Private Data On-Chain                      
+Code With No Effects                                   
+Message call with hardcoded gas amount                 
+Hash Collisions With Multiple Variable Length Arguments
+Unexpected Ether balance                               
+Presence of unused variables                           
+Right-To-Left-Override control character (U+202E)      
+Typographical Error                                    
+DoS With Block Gas Limit                               
+Arbitrary Jump with Function Type Variable             
+Insufficient Gas Griefing                              
+Incorrect Inheritance Order                            
+Write to Arbitrary Storage Location                    
+Requirement Violation                                  
+Lack of Proper Signature Verification                  
+Missing Protection against Signature Replay Attacks    
+Weak Sources of Randomness from Chain Attributes       
+Shadowing State Variables                              
+Incorrect Constructor Name                             
+Signature Malleability                                 
+Block values as a proxy for time                       
+Authorization through tx.origin                        
+Transaction Order Dependence                           
+DoS with Failed Call                                   
+Delegatecall to Untrusted Callee                       
+Use of Deprecated Solidity Functions                   
+Assert Violation                                       
+Uninitialized Storage Pointer                          
+State Variable Default Visibility                      
+Reentrancy                                             
+Unprotected SELFDESTRUCT Instruction                   
+Unprotected Ether Withdrawal                           
+Unchecked Call Return Value                            
+Floating Pragma                                        
+Outdated Compiler Version                              
+Integer Overflow and Underflow                         
+Function Default Visibility                            
