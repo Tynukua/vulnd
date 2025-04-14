@@ -113,7 +113,6 @@ def get_vulnerabilities(code):
 
     result = chain.invoke({"code": code})
     result_text = result.content
-    print(result_text)
     (result_text[result_text.find("```json") + len("```json"):result_text.find("```", result_text.find("```json") + len("```json"))])
     return json.loads(result_text[result_text.find("```json") + len("```json"):result_text.find("```", result_text.find("```json") + len("```json"))])
 
