@@ -1,5 +1,4 @@
 # TODO
-- fix json parser
 - improve test runner by LLM
 - imporove test runner by NLP metrics(bleu)
 - increase vuln_files
