@@ -134,9 +134,11 @@ qa_chain = RetrievalQA.from_chain_type(
 )
 
 def get_vulnerabilities(code):
-    import json
+    import json_parser
 
     result = qa_chain.invoke({"query": code})
     result_text = result['result']
+
+    return json_parser.parse_openai_response(result_text)
     (result_text[result_text.find("```json") + len("```json"):result_text.find("```", result_text.find("```json") + len("```json"))])
     return json.loads(result_text[result_text.find("```json") + len("```json"):result_text.find("```", result_text.find("```json") + len("```json"))])
