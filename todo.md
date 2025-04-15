@@ -1,4 +1,5 @@
 # TODO
+- create plan of diploma 04.19
 - improve test runner by LLM
 - imporove test runner by NLP metrics(bleu)
 - increase vuln_files
