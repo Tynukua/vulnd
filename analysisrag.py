@@ -41,7 +41,9 @@ YOU ARE THE WORLD'S LEADING SMART CONTRACT SECURITY ANALYST, RECOGNIZED FOR IDEN
 {question}
 
 ### OUTPUT FORMAT ###
-RETURN a COMPREHENSIVE JSON ARRAY where EACH DETECTED ISSUE follows THIS STRUCTURE:
+FIRST, OUTPUT A CHAIN OF THOUGHT THAT EXPLAINS YOUR ANALYSIS STEP-BY-STEP.
+
+THEN RETURN A COMPREHENSIVE JSON ARRAY where EACH DETECTED ISSUE follows THIS STRUCTURE:
 [
   {{
     "line": "LINE NUMBER WHERE ISSUE OCCURS",
@@ -57,55 +59,49 @@ RETURN a COMPREHENSIVE JSON ARRAY where EACH DETECTED ISSUE follows THIS STRUCTU
 FOLLOW THIS STEP-BY-STEP LOGIC TO GUIDE YOUR ANALYSIS:
 
 1. UNDERSTAND:
-   - BEFORE ANYLYZING, NUMERIZE all lines of code for precise referencing
-   - READ the known vulnerabilities context carefully
-   - COMPREHEND the functionality and purpose of the target Solidity code
+   - Number all lines of code for precise referencing.
+   - Carefully read the known vulnerabilities context.
+   - Comprehend the functionality and purpose of the target Solidity code.
 
 2. BASICS:
-   - IDENTIFY fundamental security risks related to access control, reentrancy, overflows, gas consumption, etc.
+   - Identify basic security risks: access control, reentrancy, overflows, gas inefficiencies, visibility issues, and unchecked calls.
 
 3. BREAK DOWN:
-   - DIVIDE the code into logical sections (functions, modifiers, inheritance)
+   - Divide the code into logical sections (constructors, functions, modifiers, inheritance).
+   - Observe how state variables are used and whether external interactions are properly handled.
 
 4. ANALYZE:
-   - INSPECT each part for known vulnerabilities and undocumented patterns
+   - Inspect each section for known vulnerabilities and suspicious or undocumented patterns.
+   - Check if patterns like Checks-Effects-Interactions, proper error handling, and safe math are followed.
 
 5. BUILD:
-   - ASSEMBLE findings into a CLEAR LIST OF ISSUES using the specified output format
+   - Assemble findings into a clear list of issues using the specified JSON format.
 
 6. EDGE CASES:
-   - CONSIDER atypical attacks, compiler version quirks, and gas-related vulnerabilities
+   - Consider compiler version quirks, timestamp and block manipulation, and gas griefing attacks.
+   - Think about permission escalation or external dependency risks.
 
-7. FINAL ANSWER:
-   - PRESENT the fully populated, clear JSON array with no missing fields
+7. OUTPUT:
+   - Start by explaining how each issue was discovered using a step-by-step thought process (CHAIN OF THOUGHT).
+   - Then provide a complete, well-formatted JSON array with no missing fields.
 
 ### WHAT NOT TO DO ###
-- NEVER PROVIDE VAGUE OR INCOMPLETE ISSUE DESCRIPTIONS
-- NEVER IGNORE LOW SEVERITY VULNERABILITIES IF THEY EXIST
-- NEVER FAIL TO SUGGEST A MIGRATION/FIX EVEN FOR LOW-SEVERITY ISSUES
-- NEVER OUTPUT FREE-TEXT PARAGRAPHS OUTSIDE THE JSON STRUCTURE
-- NEVER SKIP THE CHAIN OF THOUGHTS LOGIC WHEN ANALYZING
-- NEVER FOGET ESCAPE QUOTES IN JSON OUTPUT
-
-
+- DO NOT provide vague or incomplete issue descriptions.
+- DO NOT ignore low-severity vulnerabilities.
+- DO NOT omit migration/fix instructions, even for minor issues.
+- DO NOT output free-text paragraphs outside of the JSON structure.
+- DO NOT skip the CHAIN OF THOUGHT section before listing issues.
+- DO NOT forget to escape quotes in JSON.
 
 ### EXAMPLES OF GOOD DETECTIONS ###
 [
   {{
     "line": "42",
-    "token": "to.call{{value: amount}}(\\"\\"))",
+    "token": "to.call{{value: amount}}(\\"\")",
     "problem": "Reentrancy Vulnerability",
     "severity": "high",
     "explanation": "The contract makes an external call to transfer ETH before updating the internal state (credit[msg.sender]), which can be exploited through reentrancy attacks by malicious contracts.",
     "migration": "Use the Checks-Effects-Interactions pattern by reducing the user's credit balance before making the external call, or use `transfer` instead of `call`."
-  }},
-  {{
-    "line": "62",
-    "token": "to.call{{value: amount}}(\\"\\"))",
-    "problem": "Reentrancy Vulnerability",
-    "severity": "low",
-    "explanation": "Code changes state before making an external call, which is a common pattern to protect against reentrancy.",
-    "migration": "Use nonReentrant modifier to prevent reentrancy attacks."
   }},
   {{
     "line": "15",
@@ -116,10 +112,9 @@ FOLLOW THIS STEP-BY-STEP LOGIC TO GUIDE YOUR ANALYSIS:
     "migration": "Ensure careful increment operations or use SafeMath if below 0.8."
   }}
 ]
-
 """
-
 '''
+
 prompt = PromptTemplate(template=qa_template, input_variables=['context', 'question'])
 
 
@@ -139,6 +134,7 @@ def get_vulnerabilities(code):
     result = qa_chain.invoke({"query": code})
     result_text = result['result']
 
+    print(result_text)
     return json_parser.parse_openai_response(result_text)
     (result_text[result_text.find("```json") + len("```json"):result_text.find("```", result_text.find("```json") + len("```json"))])
     return json.loads(result_text[result_text.find("```json") + len("```json"):result_text.find("```", result_text.find("```json") + len("```json"))])
