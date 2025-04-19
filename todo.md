@@ -1,6 +1,5 @@
 # TODO
-- improve test runner by LLM
-- imporove test runner by NLP metrics(bleu)
+
 - create plan of diploma 04.19
 - increase vuln_files
     - write scrapper to parse security articles about solidity
