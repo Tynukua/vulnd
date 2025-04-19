@@ -1,5 +1,6 @@
 # TODO
 - create blockschemes
+- create charts for different aprocaches, models, etc
 - create plan of diploma 04.19
 - increase vuln_files
     - write scrapper to parse security articles about solidity
