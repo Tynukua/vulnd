@@ -270,7 +270,7 @@ Use the examples below to guide your analysis.
 ```
 function withdraw(uint amount) public {
     require(balances[msg.sender] >= amount);
-    (bool success,) = msg.sender.call{value: amount}("");
+    (bool success,) = msg.sender.call{{value: amount}}("");
     require(success);
     balances[msg.sender] -= amount;
 }
@@ -350,7 +350,7 @@ Use the examples below to guide your analysis.
 ```
 function withdraw(uint amount) public {
     require(balances[msg.sender] >= amount);
-    (bool success,) = msg.sender.call{value: amount}("");
+    (bool success,) = msg.sender.call{{value: amount}}("");
     require(success);
     balances[msg.sender] -= amount;
 }
