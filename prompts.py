@@ -268,12 +268,12 @@ Use the examples below to guide your analysis.
 
 #### INPUT:
 ```
-function withdraw(uint amount) public {
+function withdraw(uint amount) public {{
     require(balances[msg.sender] >= amount);
     (bool success,) = msg.sender.call{{value: amount}}("");
     require(success);
     balances[msg.sender] -= amount;
-}
+}}
 ```
 
 #### OUTPUT:
@@ -294,13 +294,13 @@ function withdraw(uint amount) public {
 
 #### INPUT:
 ```
-contract Counter {
+contract Counter {{
     uint8 public count = 0;
 
-    function increment() public {
+    function increment() public {{
         count += 1;
-    }
-}
+    }}
+}}
 ```
 
 #### OUTPUT:
@@ -348,12 +348,12 @@ Use the examples below to guide your analysis.
 
 #### INPUT:
 ```
-function withdraw(uint amount) public {
+function withdraw(uint amount) public {{
     require(balances[msg.sender] >= amount);
     (bool success,) = msg.sender.call{{value: amount}}("");
     require(success);
     balances[msg.sender] -= amount;
-}
+}}
 ```
 
 #### OUTPUT:
@@ -374,13 +374,13 @@ function withdraw(uint amount) public {
 
 #### INPUT:
 ```
-contract Counter {
+contract Counter {{
     uint8 public count = 0;
 
-    function increment() public {
+    function increment() public {{
         count += 1;
-    }
-}
+    }}
+}}
 ```
 
 #### OUTPUT:
