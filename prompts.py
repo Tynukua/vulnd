@@ -183,4 +183,231 @@ FOLLOW THIS STEP-BY-STEP LOGIC TO GUIDE YOUR ANALYSIS:
 ]
 """
 '''
+SIMPLE = '''
+"""
+YOU ARE A SECURITY ANALYST SPECIALIZED IN FINDING VULNERABILITIES IN SOLIDITY SMART CONTRACTS.
 
+### OBJECTIVE ###
+- Analyze the provided Solidity code for vulnerabilities, risks, and optimization issues.
+- Identify all potential security problems.
+- Suggest clear and actionable fixes.
+
+### INPUT ###
+- TARGET CODE: {code}
+
+### OUTPUT FORMAT ###
+Return a JSON array where each detected issue has this structure:
+[
+  {{
+    "line": "LINE NUMBER WHERE ISSUE OCCURS",
+    "token": "EXACT PROBLEMATIC CODE SNIPPET",
+    "problem": "CONCISE NAME OF THE ISSUE",
+    "severity": "low | medium | high",
+    "explanation": "WHY this is a problem",
+    "migration": "HOW to fix or mitigate the issue"
+  }}
+]
+
+### IMPORTANT ###
+- Do not miss any vulnerability, even minor ones.
+- Always suggest a fix or improvement.
+- Escape quotes properly for JSON.
+
+"""
+'''
+SIMPLE_RAG = '''
+"""
+YOU ARE A SECURITY ANALYST SPECIALIZED IN FINDING VULNERABILITIES IN SOLIDITY SMART CONTRACTS.
+
+### OBJECTIVE ###
+- Analyze the provided Solidity code for vulnerabilities, risks, and optimization issues.
+- Identify all potential security problems.
+- Suggest clear and actionable fixes.
+
+### INPUT ###
+- KNOWN VULNERABILITIES CONTEXT:
+{context}
+
+- TARGET SOLIDITY CODE TO ANALYZE:
+{question}
+
+### OUTPUT FORMAT ###
+Return a JSON array where each detected issue has this structure:
+[
+  {{
+    "line": "LINE NUMBER WHERE ISSUE OCCURS",
+    "token": "EXACT PROBLEMATIC CODE SNIPPET",
+    "problem": "CONCISE NAME OF THE ISSUE",
+    "severity": "low | medium | high",
+    "explanation": "WHY this is a problem",
+    "migration": "HOW to fix or mitigate the issue"
+  }}
+]
+
+### IMPORTANT ###
+- Do not miss any vulnerability, even minor ones.
+- Always suggest a fix or improvement.
+- Escape quotes properly for JSON.
+
+"""
+'''
+FEWSHOT = '''
+"""
+YOU ARE A LEADING SECURITY ANALYST SPECIALIZED IN SOLIDITY SMART CONTRACTS.
+
+Your task: 
+- Analyze the given Solidity code.
+- Detect vulnerabilities and risks.
+- Provide detailed explanations and fixes.
+
+Use the examples below to guide your analysis.
+
+---
+
+### EXAMPLE 1
+
+#### INPUT:
+```
+function withdraw(uint amount) public {
+    require(balances[msg.sender] >= amount);
+    (bool success,) = msg.sender.call{value: amount}("");
+    require(success);
+    balances[msg.sender] -= amount;
+}
+```
+
+#### OUTPUT:
+[
+  {{
+    "line": "4",
+    "token": "msg.sender.call{{value: amount}}(\"\")",
+    "problem": "Reentrancy Vulnerability",
+    "severity": "high",
+    "explanation": "Making an external call before updating the internal balance opens up a reentrancy attack vector.",
+    "migration": "Update the balance first before making the external call. Alternatively, use the Checks-Effects-Interactions pattern."
+  }}
+]
+
+---
+
+### EXAMPLE 2
+
+#### INPUT:
+```
+contract Counter {
+    uint8 public count = 0;
+
+    function increment() public {
+        count += 1;
+    }
+}
+```
+
+#### OUTPUT:
+[
+  {{
+    "line": "5",
+    "token": "count += 1;",
+    "problem": "Possible Overflow",
+    "severity": "medium",
+    "explanation": "Using uint8 for a counter can cause an overflow when the value exceeds 255.",
+    "migration": "Use a larger integer type like uint256, or add overflow checks."
+  }}
+]
+
+---
+
+### NOW YOUR TURN
+
+#### TARGET CODE:
+{code}
+
+#### OUTPUT:
+Return a JSON array following the same structure as shown above.
+
+### RULES:
+- Escape all quotes properly for JSON.
+- Always provide a fix even for low severity issues.
+- Be thorough but concise.
+"""
+'''
+FEWSHOT_RAG = '''
+"""
+YOU ARE A LEADING SECURITY ANALYST SPECIALIZED IN SOLIDITY SMART CONTRACTS.
+
+Your task: 
+- Analyze the given Solidity code.
+- Detect vulnerabilities and risks.
+- Provide detailed explanations and fixes.
+
+Use the examples below to guide your analysis.
+
+---
+
+### EXAMPLE 1
+
+#### INPUT:
+```
+function withdraw(uint amount) public {
+    require(balances[msg.sender] >= amount);
+    (bool success,) = msg.sender.call{value: amount}("");
+    require(success);
+    balances[msg.sender] -= amount;
+}
+```
+
+#### OUTPUT:
+[
+  {{
+    "line": "4",
+    "token": "msg.sender.call{{value: amount}}(\"\")",
+    "problem": "Reentrancy Vulnerability",
+    "severity": "high",
+    "explanation": "Making an external call before updating the internal balance opens up a reentrancy attack vector.",
+    "migration": "Update the balance first before making the external call. Alternatively, use the Checks-Effects-Interactions pattern."
+  }}
+]
+
+---
+
+### EXAMPLE 2
+
+#### INPUT:
+```
+contract Counter {
+    uint8 public count = 0;
+
+    function increment() public {
+        count += 1;
+    }
+}
+```
+
+#### OUTPUT:
+[
+  {{
+    "line": "5",
+    "token": "count += 1;",
+    "problem": "Possible Overflow",
+    "severity": "medium",
+    "explanation": "Using uint8 for a counter can cause an overflow when the value exceeds 255.",
+    "migration": "Use a larger integer type like uint256, or add overflow checks."
+  }}
+]
+
+---
+
+### NOW YOUR TURN
+
+#### TARGET CODE:
+{code}
+
+#### OUTPUT:
+Return a JSON array following the same structure as shown above.
+
+### RULES:
+- Escape all quotes properly for JSON.
+- Always provide a fix even for low severity issues.
+- Be thorough but concise.
+"""
+'''
