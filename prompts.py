@@ -400,7 +400,11 @@ contract Counter {
 ### NOW YOUR TURN
 
 #### TARGET CODE:
-{code}
+- KNOWN VULNERABILITIES CONTEXT:
+{context}
+
+- TARGET SOLIDITY CODE TO ANALYZE:
+{question}
 
 #### OUTPUT:
 Return a JSON array following the same structure as shown above.
