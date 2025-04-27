@@ -1,0 +1,2 @@
+BASIC,gpt-4o-mini,Overall: TP=31, FP=9, FN=34, TN=21 | Accuracy=0.55, Recall=0.48, F1=0.59
+BASIC_RAG,gpt-4o-mini,Overall: TP=30, FP=5, FN=35, TN=25 | Accuracy=0.58, Recall=0.46, F1=0.60
