@@ -6,12 +6,12 @@ from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 
 class Analyser:
-    def __init__(self, model_name, prompt, is_rag=False):
+    def __init__(self, model_name, prompt):
         self.prompt_text = prompt
         self.model = ChatOpenAI(model_name=model_name)
-        self.is_rag = is_rag
+        self.is_rag = '{context}' in self.prompt_text
 
-        if is_rag:
+        if self.is_rag:
             self.embedding = OpenAIEmbeddings()
             self.prompt = PromptTemplate(template=self.prompt_text, input_variables=['context', 'question'])
             self.vectorstore = FAISS.load_local("vuln_index", self.embedding, allow_dangerous_deserialization=True)
@@ -66,7 +66,7 @@ if __name__ == "__main__":
         "migration": "CLEAR AND ACTIONABLE INSTRUCTION ON HOW TO FIX OR MITIGATE THIS ISSUE"
         }}
     ]
-    ''', is_rag=False)
+    ''')
     
     code = '''
 pragma solidity ^0.8.0;
@@ -98,7 +98,7 @@ contract VulnerableContract {
         "explanation": "DETAILED REASON WHY THIS IS A PROBLEM INCLUDING POTENTIAL IMPACT",
         "migration": "CLEAR AND ACTIONABLE INSTRUCTION ON HOW TO FIX OR MITIGATE THIS ISSUE"
         }}
-    ]''', is_rag=True)
+    ]''')
 
 
     async def main():
