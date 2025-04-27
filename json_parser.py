@@ -38,7 +38,7 @@ if __name__ == "__main__":
     ```json
     {
         "quotes": [
-            {"author": "Albert Einstein", "quote": "я пришел и сказал"привет""},
+            {"author": "Albert Einstein", "quote": "double quates :"TEST""},
             {"author": "Isaac Newton", "quote": "If I have seen further it is by standing on the shoulders of Giants."}
         ]
     }
