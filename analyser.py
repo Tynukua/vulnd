@@ -11,6 +11,22 @@ class Analyser:
         self.model = ChatOpenAI(model_name=model_name)
         self.is_rag = is_rag
 
+        if is_rag:
+            self.embedding = OpenAIEmbeddings()
+            self.prompt = PromptTemplate(template=self.prompt_text, input_variables=['context', 'question'])
+            self.vectorstore = FAISS.load_local("vuln_index", self.embedding, allow_dangerous_deserialization=True)
+            self.retriever = self.vectorstore.as_retriever(search_type="similarity", k=4)
+
+            self.chain = RetrievalQA.from_chain_type(
+                llm=self.model,
+                retriever=self.retriever,
+                chain_type="stuff",
+                chain_type_kwargs={'prompt': self.prompt}
+                )
+        else:
+            self.prompt = PromptTemplate.from_template(self.prompt_text)
+            self.chain = self.prompt | self.model
+
     async def get_vulnerabilities(self, code):
         import json_parser
         
@@ -19,27 +35,14 @@ class Analyser:
         return json_parser.parse_openai_response(result_text)
     
     async def _get_vulnerabilities_rag(self, code):
-        embedding = OpenAIEmbeddings()
-        prompt = PromptTemplate(template=self.prompt_text, input_variables=['context', 'question'])
-        vectorstore = FAISS.load_local("vuln_index", embedding, allow_dangerous_deserialization=True)
-        retriever = vectorstore.as_retriever(search_type="similarity", k=4)
-
-        qa_chain = RetrievalQA.from_chain_type(
-            llm=self.model,
-            retriever=retriever,
-            chain_type="stuff",
-            chain_type_kwargs={'prompt': prompt}
-            )
-
-        result = await qa_chain.ainvoke({"query": code})
+        result = await self.chain.ainvoke({"query": code})
         result_text = result['result']
+
         return result_text
     
     async def _get_vulnerabilities(self, code):
-        prompt = PromptTemplate.from_template(self.prompt_text)
-        chain = prompt | self.model
 
-        result = await chain.ainvoke({"code": code})
+        result = await self.chain.ainvoke({"code": code})
         result_text = result.content
 
         return result_text
