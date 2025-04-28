@@ -9,3 +9,5 @@ BASIC, "gpt-3.5-turbo", Overall: TP=24, FP=5, FN=41, TN=25 | Accuracy=0.52, Reca
 BASIC_RAG, "gpt-3.5-turbo", Overall: TP=16, FP=5, FN=49, TN=25 | Accuracy=0.43, Recall=0.25, F1=0.37
 FEWSHOT, "gpt-3.5-turbo", Overall: TP=19, FP=2, FN=46, TN=28 | Accuracy=0.49, Recall=0.29, F1=0.44
 FEWSHOT_RAG, "gpt-3.5-turbo", Overall: TP=26, FP=4, FN=39, TN=26 | Accuracy=0.55, Recall=0.40, F1=0.55
+SIMPLE, "gpt-3.5-turbo", Overall: TP=22, FP=3, FN=43, TN=27 | Accuracy=0.52, Recall=0.34, F1=0.49
+SIMPLE_RAG, "gpt-3.5-turbo", Overall: TP=32, FP=2, FN=33, TN=28 | Accuracy=0.63, Recall=0.49, F1=0.65
