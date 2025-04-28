@@ -14,10 +14,10 @@ def parse_openai_response(response):
     """
     # Extract JSON content enclosed in ```json``` markers
     match = re.search(r"```json\s*(.*?)\s*```", response, re.DOTALL)
-    if not match:
-        raise ValueError("No valid JSON found in the response.")
-    
-    json_content = match.group(1)
+    if match:
+        json_content = match.group(1)
+    else:
+        json_content = response
     
     # Parse the JSON content
     while True:
