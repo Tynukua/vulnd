@@ -4,3 +4,6 @@ FEWSHOT,gpt-4o-mini, Overall: TP=23, FP=5, FN=42, TN=25 | Accuracy=0.51, Recall=
 FEWSHOT_RAG,gpt-4o-mini, Overall: TP=29, FP=7, FN=36, TN=23 | Accuracy=0.55, Recall=0.45, F1=0.57
 SIMPLE,gpt-4o-mini, Overall: TP=22, FP=5, FN=43, TN=25 | Accuracy=0.49, Recall=0.34, F1=0.48
 SIMPLE_RAG,gpt-4o-mini, Overall: TP=30, FP=5, FN=35, TN=25 | Accuracy=0.58, Recall=0.46, F1=0.60
+
+BASIC, "gpt-3.5-turbo", Overall: TP=24, FP=5, FN=41, TN=25 | Accuracy=0.52, Recall=0.37, F1=0.51
+BASIC_RAG, "gpt-3.5-turbo",Overall: TP=16, FP=5, FN=49, TN=25 | Accuracy=0.43, Recall=0.25, F1=0.37
