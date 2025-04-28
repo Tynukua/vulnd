@@ -29,7 +29,7 @@ def parse_openai_response(response):
             if json_content[pos] == '"':
                 json_content = json_content[:pos] + "\\" + json_content[pos:]
             else:
-                raise ValueError(f"Invalid JSON format: {e}")
+                raise ValueError(f"Invalid JSON format: {e}", json_content)
 
 # Example usage
 if __name__ == "__main__":

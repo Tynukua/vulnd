@@ -153,6 +153,7 @@ FOLLOW THIS STEP-BY-STEP LOGIC TO GUIDE YOUR ANALYSIS:
 7. OUTPUT:
    - Start by explaining how each issue was discovered using a step-by-step thought process (CHAIN OF THOUGHT).
    - Then provide a complete, well-formatted JSON array with no missing fields.
+   - Put json array in markdown block ```json```.
 
 ### WHAT NOT TO DO ###
 - DO NOT provide vague or incomplete issue descriptions.
