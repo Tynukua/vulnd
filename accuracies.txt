@@ -14,3 +14,7 @@ SIMPLE_RAG, "gpt-3.5-turbo", Overall: TP=32, FP=2, FN=33, TN=28 | Accuracy=0.63,
 
 BASIC, "o4-mini", Overall: TP=28, FP=2, FN=37, TN=28 | Accuracy=0.59, Recall=0.43, F1=0.59
 BASIC_RAG, "o4-mini", Overall: TP=25, FP=1, FN=40, TN=29 | Accuracy=0.57, Recall=0.38, F1=0.55
+FEWSHOT, "o4-mini", Overall: TP=24, FP=2, FN=41, TN=28 | Accuracy=0.55, Recall=0.37, F1=0.53
+FEWSHOT_RAG, "o4-html", Overall: TP=29, FP=0, FN=36, TN=30 | Accuracy=0.62, Recall=0.45, F1=0.62
+SIMPLE, "o4-html", Overall: TP=28, FP=3, FN=37, TN=27 | Accuracy=0.58, Recall=0.43, F1=0.58
+SIMPLE_RAG, "o4-html", Overall: TP=28, FP=1, FN=37, TN=29 | Accuracy=0.60, Recall=0.43, F1=0.60
